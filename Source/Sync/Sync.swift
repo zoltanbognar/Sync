@@ -79,6 +79,7 @@ public protocol SyncDelegate: class {
     var parentRelationship: NSRelationshipDescription?
     var context: NSManagedObjectContext?
     unowned var dataStack: DataStack
+    public var error: NSError?
 
     public init(changes: [[String: Any]], inEntityNamed entityName: String, predicate: NSPredicate? = nil, parent: NSManagedObject? = nil, parentRelationship: NSRelationshipDescription? = nil, context: NSManagedObjectContext? = nil, dataStack: DataStack, operations: Sync.OperationOptions = .all) {
         self.changes = changes
@@ -130,6 +131,7 @@ public protocol SyncDelegate: class {
             })
         } catch let error as NSError {
             print("Failed syncing changes \(error)")
+            self.error = error
         }
 
         self.updateExecuting(false)
